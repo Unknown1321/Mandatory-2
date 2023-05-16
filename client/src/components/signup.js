@@ -1,4 +1,4 @@
-import styles from "../styles/signup.css";
+import styles from "../styles/register.css";
 import React, { useState } from 'react';
 
 const Signup = () => {
@@ -14,7 +14,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
+    <div className="register-container">
       <h2>Signup</h2>
       <form>
         <div>

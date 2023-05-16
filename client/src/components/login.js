@@ -1,4 +1,4 @@
-import styles from "../styles/login.css";
+import styles from "../styles/register.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -43,19 +43,19 @@ export const Login = () => {
   };
 
   return (
-    <div className="">
+    <div className="register-container">
       <ToastContainer
         autoClose={15000}
         closeOnClick={true}
         position={toast.POSITION.TOP_CENTER}
       />
 
-      <form onSubmit={handleSubmit} className={styles.container} method="POST">
-        <h1>Login</h1>
+      <form onSubmit={handleSubmit}  method="POST">
+        <h2>Login</h2>
         <p>
           <input
             id="Email"
-            type="text"
+            type="email"
             name="email"
             placeholder="Email"
             value={email}
@@ -74,7 +74,9 @@ export const Login = () => {
             required
           />
         </p>
-        <input type="submit" id={styles.submit} value="Sign in" />
+        <button type="button" onClick={handleSubmit}>
+          Log in
+        </button>
       </form>
 
       <div className={styles.signUpButton}>
