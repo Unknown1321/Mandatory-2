@@ -3,6 +3,8 @@ const router = express.Router();
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const db = require('../db/dbConnection');
+const { sendEmail } = require('../email/sendEmail');
+
 
 // Validation schema
 const userSchema = Joi.object().keys({
@@ -21,7 +23,7 @@ router.route('/register')
       const result = userSchema.validate(req.body);
       if (result.error) {
         req.flash('error', 'Data entered is not valid. Please try again.');
-        res.redirect('/users/register');
+        res.redirect('/register');
         return;
       }
       const { email, username, password } = result.value;
@@ -39,8 +41,13 @@ router.route('/register')
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Insert the new user into the database
-      const insertQuery = 'INSERT INTO users (email, username, password) VALUES (?, ?, ?)';
-      await db.query(insertQuery, [email, username, hashedPassword]);
+      const insertQuery = 'INSERT INTO users (email, password) VALUES (?, ?, ?)';
+      await db.query(insertQuery, [email, hashedPassword]);
+
+      // Send email to the user
+      const subject = 'Signup Successful';
+      const message = 'Your have successfully signed up.';
+      await sendEmail(email, subject, message);
 
       req.flash('success', 'Registration successful. Please log in.');
       res.redirect('/users/login');

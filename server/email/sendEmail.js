@@ -24,4 +24,4 @@ const transporter = nodemailer.createTransport({
     }
   }
 
-export default transporter;  
+module.exports = {sendEmail, transporter};  

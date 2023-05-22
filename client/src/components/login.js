@@ -20,7 +20,7 @@ export const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        API_URL + "/login",
+        "http://localhost:8080/login",
         {
           email: email,
           password: password,
@@ -28,10 +28,17 @@ export const Login = () => {
         WITH_CREDENTIALS
       );
       if (response.status === 200) {
-        navigate("/homepage");
+        navigate("/");
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log("Error object:", error);
+      if (error.response && error.response.data) {
+        // Handle the error response
+        toast.error(error.response.data.message);
+      } else {
+        // Handle the generic error
+        toast.error("An error occurred.");
+      }
     }
   };
 

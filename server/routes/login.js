@@ -12,14 +12,14 @@ const loginSchema = Joi.object().keys({
 
 router.route('/login')
   .get((req, res) => {
-    res.render('login');
+    res.render('login.ejs');
   })
   .post(async (req, res, next) => {
     try {
       const result = loginSchema.validate(req.body);
       if (result.error) {
         req.flash('error', 'Data entered is not valid. Please try again.');
-        res.redirect('/users/login');
+        res.redirect('/login');
         return;
       }
       const { email, password } = result.value;
@@ -36,15 +36,16 @@ router.route('/login')
         if (passwordMatch) {
           // Set user session or generate JWT token
           req.session.user = user;
+          req.session.isLoggedIn = true; // Set the login flag to true
           req.flash('success', 'Login successful!');
-          res.redirect('/dashboard');
+          res.redirect('/');
         } else {
           req.flash('error', 'Wrong credentials. Try again.');
-          res.redirect('/users/login');
+          res.redirect('/login');
         }
       } else {
         req.flash('error', 'Email not registered.');
-        res.redirect('/users/login');
+        res.redirect('/login');
       }
     } catch (error) {
       next(error);

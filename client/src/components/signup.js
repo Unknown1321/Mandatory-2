@@ -1,16 +1,32 @@
 import styles from "../styles/register.css";
 import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignup = () => {
-    // Perform signup logic here
-    console.log('Signup:', email, password);
-    // Reset form fields
-    setEmail('');
-    setPassword('');
+  const handleSignup = async () => {
+    try {
+      // Send signup request to the backend API
+      const response = await axios.post('http://localhost:8080/register', {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        // Reset form fields
+        setEmail('');
+        setPassword('');
+        console.log('Signup successful');
+        toast.success('Email sent successfully!');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+      toast.error('Error sending email. Please try again.');
+    }
   };
 
   return (
@@ -42,3 +58,5 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
